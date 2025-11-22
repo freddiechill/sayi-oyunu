@@ -5,24 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sıralama Oyunu</title>
     
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/freddiechill/gorsel-depom/refs/heads/main/sayioyunu.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/freddiechill/gorsel-depom/refs/heads/main/sayioyunu.png">
+
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         :root {
-            /* Ortak Tasarım Değişkenleri */
+            /* Ortak Tasarım Değişkenleri (Arifiye/KYK ile uyumlu) */
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --border-color: #333;
             --text-color: #e0e0e0;
+            
+            /* Pastel Renkler */
             --accent-blue: #90caf9;
             --accent-purple: #ce93d8;
             --accent-green: #a5d6a7;
             --accent-red: #ef9a9a;
+            --accent-yellow: #fff59d;
             
-            /* Oyun Özel Değişkenleri (Varsayılan Tema) */
-            --game-number-bg: #252525;
-            --game-number-text: var(--accent-blue);
+            /* Oyun Özel */
             --box-bg: #252525;
             --box-filled-bg: var(--accent-purple);
             --box-filled-text: #121212;
@@ -30,10 +34,10 @@
             --btn-text: #fff;
         }
 
-        /* Tema Geçişleri için Renkler */
-        body[data-theme="red"] { --box-filled-bg: #ef9a9a; --game-number-text: #ef9a9a; }
-        body[data-theme="green"] { --box-filled-bg: #a5d6a7; --game-number-text: #a5d6a7; }
-        body[data-theme="yellow"] { --box-filled-bg: #fff59d; --game-number-text: #fff59d; }
+        /* Tema Geçişleri (Opsiyonel, oyunun eski özelliğini korudum) */
+        body[data-theme="red"] { --box-filled-bg: #ef9a9a; }
+        body[data-theme="green"] { --box-filled-bg: #a5d6a7; }
+        body[data-theme="yellow"] { --box-filled-bg: #fff59d; }
         body[data-theme="light"] { 
             --bg-color: #f0f0f0; --card-bg: #fff; --border-color: #ccc; --text-color: #111; 
             --box-bg: #e0e0e0; --box-filled-text: #000; --btn-bg: #ddd; --btn-text: #000;
@@ -44,13 +48,25 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 15px;
+            padding: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* Footer'ı alta itmek için */
+            justify-content: space-between; 
+        }
+
+        /* Ana İçerik Alanı (Footer'ı iter) */
+        .main-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 15px;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
+            justify-content: center; /* Oyunu dikey ortala */
         }
 
         /* Üst Ayarlar Barı */
@@ -69,12 +85,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .setting-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        .setting-group { display: flex; align-items: center; gap: 8px; }
         label { font-size: 0.85rem; color: #888; font-weight: 700; }
 
         select {
@@ -89,7 +100,7 @@
             outline: none;
         }
 
-        /* Ana Kapsayıcı */
+        /* Oyun Konteyneri */
         .container {
             width: 100%;
             max-width: 500px;
@@ -101,11 +112,11 @@
         h1 {
             font-size: 1.4rem;
             text-align: center;
-            margin: 0 0 5px 0;
+            margin: 0 0 10px 0;
             color: var(--text-color);
         }
         h1 span {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #888;
             display: block;
             margin-top: 5px;
@@ -118,25 +129,24 @@
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            margin-top: 15px;
         }
 
         /* Büyük Sayı Göstergesi (Saat Kutusu Tarzı) */
         .current-number-display {
             background-color: var(--card-bg);
             width: 100%;
-            padding: 20px 0;
-            border-radius: 20px;
+            padding: 25px 0;
+            border-radius: 24px;
             border: 1px solid var(--border-color);
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 900;
-            color: var(--game-number-text);
+            color: var(--accent-blue);
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             font-variant-numeric: tabular-nums;
-            min-height: 100px;
+            min-height: 120px;
             transition: transform 0.2s;
         }
         
@@ -144,23 +154,24 @@
         .current-number-display.final { transform: scale(1.05); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
         .game-info {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #888;
             text-align: center;
-            min-height: 40px;
+            min-height: 24px;
         }
 
         .undo-attempts-display {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--accent-red);
             font-weight: bold;
         }
 
-        /* Izgara (Grid) */
+        /* Izgara (Grid) - Mobil İçin Optimize */
         .game-board {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Mobilde 5'li 2 sıra daha iyi */
-            gap: 10px;
+            /* Mobilde 5'li 2 sıra, PC'de 10'lu 1 sıra da olabilir ama 5'li daha şık duruyor */
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 8px;
             width: 100%;
         }
 
@@ -168,19 +179,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .number-box {
             width: 100%;
-            aspect-ratio: 1; /* Kare olsun */
+            aspect-ratio: 1; /* Tam kare */
             background-color: var(--box-bg);
             border: 2px solid var(--border-color);
             border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 900;
             color: var(--text-color);
             cursor: pointer;
@@ -198,7 +209,7 @@
 
         .number-box.invalid {
             border-color: var(--accent-red);
-            background-color: rgba(239, 154, 154, 0.2);
+            background-color: rgba(239, 154, 154, 0.1);
             animation: shake 0.4s;
         }
 
@@ -222,14 +233,13 @@
             background-color: var(--btn-bg);
             color: var(--btn-text);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 12px 20px;
+            border-radius: 15px;
+            padding: 12px 18px;
             font-size: 0.9rem;
             font-weight: 900;
             font-family: 'Satoshi', sans-serif;
             cursor: pointer;
-            flex: 1;
-            min-width: 120px;
+            flex: 1 1 40%; /* Mobilde 2'li sığsın */
             transition: transform 0.2s, background-color 0.2s;
         }
 
@@ -245,6 +255,25 @@
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
+        }
+
+        /* Footer */
+        .site-footer {
+            width: 100%;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 30px;
+        }
+
+        #openLinktreeButton {
+            color: var(--accent-purple);
+            cursor: pointer;
+            font-weight: 900;
+            text-decoration: none;
         }
 
         /* MODAL */
@@ -288,6 +317,7 @@
             cursor: pointer;
             margin-top: 20px;
             font-family: 'Satoshi', sans-serif;
+            width: 100%;
         }
 
         /* Linktree Modal */
@@ -299,6 +329,8 @@
             width: 100%;
             text-align: center;
             border: 1px solid var(--border-color);
+            max-height: 80vh;
+            overflow-y: auto;
         }
         .profile-pic { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 2px solid var(--accent-purple); }
         .link-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
@@ -309,70 +341,72 @@
         }
         .link-button:hover { background: var(--border-color); }
         
-        footer { margin-top: 30px; font-size: 0.8rem; color: #666; }
-        #openLinktreeButton { color: var(--accent-purple); cursor: pointer; font-weight: bold; }
-
         @media (min-width: 600px) {
             .game-board { grid-template-columns: repeat(10, 1fr); }
+            .game-button { flex: 1; }
         }
     </style>
 </head>
 
 <body data-theme="default">
     
-    <div class="top-settings-bar">
-        <div class="setting-group">
-            <label for="difficultySelect">Zorluk:</label>
-            <select id="difficultySelect">
-                <option value="easy">Kolay</option>
-                <option value="normal" selected>Normal</option>
-                <option value="hard">Zor</option>
-            </select>
+    <div class="main-content-wrapper">
+        <div class="top-settings-bar">
+            <div class="setting-group">
+                <label for="difficultySelect">Zorluk:</label>
+                <select id="difficultySelect">
+                    <option value="easy">Kolay</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Zor</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="themeSelect">Tema:</label>
+                <select id="themeSelect">
+                    <option value="default">Varsayılan</option>
+                    <option value="red">Kırmızı</option>
+                    <option value="green">Yeşil</option>
+                    <option value="yellow">Sarı</option>
+                    <option value="light">Aydınlık</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="numberRangeSelect">Aralık:</label>
+                <select id="numberRangeSelect">
+                    <option value="1-11">1-11</option>
+                    <option value="1-30">1-30</option>
+                    <option value="1-50" selected>1-50</option>
+                    <option value="1-100">1-100</option>
+                </select>
+            </div>
         </div>
 
-        <div class="setting-group">
-            <label for="themeSelect">Tema:</label>
-            <select id="themeSelect">
-                <option value="default">Varsayılan</option>
-                <option value="red">Kırmızı</option>
-                <option value="green">Yeşil</option>
-                <option value="yellow">Sarı</option>
-                <option value="light">Aydınlık</option>
-            </select>
-        </div>
-
-        <div class="setting-group">
-            <label for="numberRangeSelect">Aralık:</label>
-            <select id="numberRangeSelect">
-                <option value="1-11">1-11</option>
-                <option value="1-30">1-30</option>
-                <option value="1-50" selected>1-50</option>
-                <option value="1-100">1-100</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="container">
-        <h1>Sıralama Oyunu <span id="displayNumberRange">(1-50)</span></h1>
-        
-        <div class="game-area">
-            <div class="current-number-display" id="currentNumberDisplay">?</div>
+        <div class="container">
+            <h1>Sıralama Oyunu <span id="displayNumberRange">(1-50)</span></h1>
             
-            <div class="game-info" id="gameInfo">Başlamak için "Yeni Sayı Çek" butonuna bas.</div>
-            <div class="undo-attempts-display" id="undoAttemptsDisplay"></div>
-            
-            <div class="game-board" id="gameBoard"></div>
+            <div class="game-area">
+                <div class="current-number-display" id="currentNumberDisplay">?</div>
+                
+                <div class="game-info" id="gameInfo">Başlamak için "Yeni Sayı Çek" butonuna bas.</div>
+                <div class="undo-attempts-display" id="undoAttemptsDisplay"></div>
+                
+                <div class="game-board" id="gameBoard"></div>
 
-            <div class="game-buttons">
-                <button id="nextNumberButton" class="game-button">Yeni Sayı Çek</button>
-                <button id="drawAnotherNumberButton" class="game-button">Başka Sayı Çek</button>
-                <button id="undoPlacementButton" class="game-button">Geri Al</button>
-                <button id="resetGameButton" class="game-button">Sıfırla</button>
+                <div class="game-buttons">
+                    <button id="nextNumberButton" class="game-button">Yeni Sayı Çek</button>
+                    <button id="drawAnotherNumberButton" class="game-button">Başka Sayı Çek</button>
+                    <button id="undoPlacementButton" class="game-button">Geri Al</button>
+                    <button id="resetGameButton" class="game-button">Sıfırla</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer>© 2025 <span id="openLinktreeButton">freddie</span></footer>
+    <footer class="site-footer">
+        © 2025 <span id="openLinktreeButton">freddie</span>
+    </footer>
 
     <div id="gameModal" class="modal">
         <div class="modal-content">
@@ -396,6 +430,13 @@
                 <a href="https://www.youtube.com/@freddiechill" target="_blank" class="link-button">YouTube</a>
                 <a href="https://www.instagram.com/freddiechill/" target="_blank" class="link-button">Instagram</a>
                 <a href="https://x.com/freddiechill_" target="_blank" class="link-button">X / Twitter</a>
+                <a href="https://bsky.app/profile/freddiechill.bsky.social" target="_blank" class="link-button">Bluesky</a>
+                <a href="https://discord.com/invite/xkVdrvhGYe" target="_blank" class="link-button">Discord</a>
+                <a href="https://www.tiktok.com/@freddiechill" target="_blank" class="link-button">TikTok</a>
+                <a href="https://open.spotify.com/user/gxg38hjsavm5uo1y1gicf1oj1" target="_blank" class="link-button">Spotify</a>
+                <a href="https://letterboxd.com/freddiechill/" target="_blank" class="link-button">Letterboxd</a>
+                <a href="https://steamcommunity.com/id/freddiechill/" target="_blank" class="link-button">Steam</a>
+                <a href="https://tr.pinterest.com/freddieflix/" target="_blank" class="link-button">Pinterest</a>
             </div>
         </div>
     </div>
@@ -439,7 +480,7 @@
             let NUMBER_RANGE_MAX = 50; 
 
             const MAX_MOVES = 10;
-            const ANIMATION_DURATION = 800; // Animasyon süresi biraz kısaltıldı
+            const ANIMATION_DURATION = 800;
 
             const DIFFICULTY_ATTEMPTS_GENERAL = { 'easy': 3, 'normal': 1, 'hard': 0 };
             const DIFFICULTY_ATTEMPTS_1_11 = { 'easy': 1, 'normal': 0 };
