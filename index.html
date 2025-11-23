@@ -13,20 +13,18 @@
 
     <style>
         :root {
-            /* Ortak Tasarım Değişkenleri (Arifiye/KYK ile uyumlu) */
+            /* RENK PALETİ (Arifiye/KYK Uyumlu) */
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --border-color: #333;
             --text-color: #e0e0e0;
             
-            /* Pastel Renkler */
             --accent-blue: #90caf9;
             --accent-purple: #ce93d8;
             --accent-green: #a5d6a7;
             --accent-red: #ef9a9a;
             --accent-yellow: #fff59d;
             
-            /* Oyun Özel */
             --box-bg: #252525;
             --box-filled-bg: var(--accent-purple);
             --box-filled-text: #121212;
@@ -34,7 +32,7 @@
             --btn-text: #fff;
         }
 
-        /* Tema Geçişleri (Opsiyonel, oyunun eski özelliğini korudum) */
+        /* Tema Renkleri */
         body[data-theme="red"] { --box-filled-bg: #ef9a9a; }
         body[data-theme="green"] { --box-filled-bg: #a5d6a7; }
         body[data-theme="yellow"] { --box-filled-bg: #fff59d; }
@@ -43,168 +41,171 @@
             --box-bg: #e0e0e0; --box-filled-text: #000; --btn-bg: #ddd; --btn-text: #000;
         }
 
-        body {
+        /* TEMEL YAPI (KAYDIRMA YOK) */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Kaydırmayı engelle */
             font-family: 'Satoshi', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Footer'ı alta itmek için */
-            justify-content: space-between; 
         }
 
-        /* Ana İçerik Alanı (Footer'ı iter) */
-        .main-content-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 15px;
-            box-sizing: border-box;
-            justify-content: center; /* Oyunu dikey ortala */
-        }
-
-        /* Üst Ayarlar Barı */
+        /* ÜST AYARLAR (Kompakt) */
         .top-settings-bar {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
             width: 100%;
-            max-width: 600px;
-            margin-bottom: 20px;
+            padding: 10px;
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0; /* Büzülmesin */
+            z-index: 10;
         }
 
-        .setting-group { display: flex; align-items: center; gap: 8px; }
-        label { font-size: 0.85rem; color: #888; font-weight: 700; }
-
+        .setting-group { display: flex; align-items: center; gap: 5px; }
+        label { font-size: 0.75rem; color: #888; font-weight: 700; }
+        
         select {
             background-color: var(--bg-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 6px 12px;
+            border-radius: 8px;
+            padding: 4px 8px;
             font-family: 'Satoshi', sans-serif;
             font-weight: 700;
+            font-size: 0.8rem;
             cursor: pointer;
             outline: none;
         }
 
-        /* Oyun Konteyneri */
+        /* ANA KONTEYNER (Esnek) */
+        .main-content {
+            flex: 1; /* Kalan tüm boşluğu kapla */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Dikey ortala */
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden; /* İçerik taşmasın */
+        }
+
         .container {
             width: 100%;
-            max-width: 500px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* İçerik çoksa sıkışması için */
+            max-height: 100%; 
         }
 
         h1 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             text-align: center;
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             color: var(--text-color);
+            flex-shrink: 0;
         }
         h1 span {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #888;
-            display: block;
-            margin-top: 5px;
+            margin-left: 5px;
+            display: inline-block;
         }
 
-        /* Oyun Alanı */
+        /* OYUN ALANI */
         .game-area {
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
+            flex: 1; /* Mümkün olduğunca alan kapla */
+            justify-content: center;
         }
 
-        /* Büyük Sayı Göstergesi (Saat Kutusu Tarzı) */
+        /* SAYI KUTUSU */
         .current-number-display {
             background-color: var(--card-bg);
             width: 100%;
-            padding: 25px 0;
-            border-radius: 24px;
+            padding: 15px 0;
+            border-radius: 20px;
             border: 1px solid var(--border-color);
-            font-size: 4rem;
+            font-size: 3rem;
             font-weight: 900;
             color: var(--accent-blue);
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             font-variant-numeric: tabular-nums;
-            min-height: 120px;
+            min-height: 80px; /* Yüksekliği biraz kıstık */
+            height: 15vh;
+            max-height: 150px;
+            flex-shrink: 0;
             transition: transform 0.2s;
         }
         
         .current-number-display.animating { transform: scale(0.95); opacity: 0.7; }
         .current-number-display.final { transform: scale(1.05); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        .game-info {
-            font-size: 1rem;
-            color: #888;
-            text-align: center;
-            min-height: 24px;
+        /* BİLGİ YAZILARI */
+        .game-info-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            min-height: 40px;
         }
+        .game-info { font-size: 0.9rem; color: #888; text-align: center; }
+        .undo-attempts-display { font-size: 0.8rem; color: var(--accent-red); font-weight: bold; }
 
-        .undo-attempts-display {
-            font-size: 0.9rem;
-            color: var(--accent-red);
-            font-weight: bold;
-        }
-
-        /* Izgara (Grid) - Mobil İçin Optimize */
+        /* IZGARA (Mobil Uyumlu) */
         .game-board {
             display: grid;
-            /* Mobilde 5'li 2 sıra, PC'de 10'lu 1 sıra da olabilir ama 5'li daha şık duruyor */
-            grid-template-columns: repeat(5, 1fr); 
+            grid-template-columns: repeat(5, 1fr); /* 5x2 Düzen */
             gap: 8px;
             width: 100%;
+            /* Ekran boyutuna göre kutuların boyutunu ayarla */
+            max-height: 40vh; 
         }
 
         .box-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
         }
 
         .number-box {
             width: 100%;
-            aspect-ratio: 1; /* Tam kare */
+            aspect-ratio: 1;
             background-color: var(--box-bg);
             border: 2px solid var(--border-color);
             border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 900;
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .number-box.filled {
             background-color: var(--box-filled-bg);
             color: var(--box-filled-text);
             border-color: transparent;
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
 
         .number-box.invalid {
@@ -213,60 +214,47 @@
             animation: shake 0.4s;
         }
 
-        .box-index {
-            font-size: 0.7rem;
-            color: #666;
-            font-weight: bold;
-        }
+        .box-index { font-size: 0.65rem; color: #666; font-weight: bold; }
 
-        /* Butonlar */
+        /* BUTONLAR */
         .game-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2x2 Düzen */
+            gap: 8px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 5px;
+            flex-shrink: 0;
         }
 
         .game-button {
             background-color: var(--btn-bg);
             color: var(--btn-text);
             border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 12px 18px;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 0.85rem;
             font-weight: 900;
             font-family: 'Satoshi', sans-serif;
             cursor: pointer;
-            flex: 1 1 40%; /* Mobilde 2'li sığsın */
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.1s;
         }
 
         .game-button:active { transform: scale(0.95); }
-        .game-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .game-button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Özel Buton Renkleri */
-        #nextNumberButton { background-color: var(--accent-blue); color: #121212; border: none; }
-        #resetGameButton { background-color: var(--accent-red); color: #121212; border: none; }
+        #nextNumberButton { background-color: var(--accent-blue); color: #121212; border: none; grid-column: span 2; }
+        #resetGameButton { background-color: var(--accent-red); color: #121212; border: none; grid-column: span 2; }
 
-        /* Animasyonlar */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        /* Footer */
+        /* FOOTER (Sabit En Alt) */
         .site-footer {
             width: 100%;
-            padding: 20px;
+            padding: 10px;
             background-color: var(--card-bg);
             border-top: 1px solid var(--border-color);
             text-align: center;
-            font-size: 0.9rem;
-            color: #888;
-            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #666;
+            flex-shrink: 0;
         }
 
         #openLinktreeButton {
@@ -276,7 +264,7 @@
             text-decoration: none;
         }
 
-        /* MODAL */
+        /* MODAL (Linktree) - EKRANA SIĞDIRMA */
         .modal {
             display: none;
             position: fixed;
@@ -290,147 +278,167 @@
             box-sizing: border-box;
         }
 
-        .modal-content {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-        }
-
-        .close-button {
-            position: absolute; top: 15px; right: 20px;
-            font-size: 24px; font-weight: bold; cursor: pointer; color: #888;
-        }
-
-        #playAgainButton {
-            background-color: var(--accent-green);
-            color: #121212;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 20px;
-            font-family: 'Satoshi', sans-serif;
-            width: 100%;
-        }
-
-        /* Linktree Modal */
         #linktreeModal .linktree-container {
             background-color: var(--card-bg);
             border-radius: 24px;
             padding: 20px;
-            max-width: 350px;
+            max-width: 380px;
             width: 100%;
             text-align: center;
             border: 1px solid var(--border-color);
-            max-height: 80vh;
-            overflow-y: auto;
+            /* Kaydırma olmasın diye max yükseklik ve flex */
+            max-height: 90vh; 
+            display: flex;
+            flex-direction: column;
         }
-        .profile-pic { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 2px solid var(--accent-purple); }
-        .link-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+
+        .close-button {
+            position: absolute; top: 10px; right: 15px;
+            font-size: 24px; font-weight: bold; cursor: pointer; color: #888;
+        }
+
+        .profile-section { margin-bottom: 10px; flex-shrink: 0; }
+        .profile-pic { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent-purple); object-fit: cover;}
+        
+        /* Linkleri Izgara Yap (Scroll Olmasın Diye) */
+        .link-buttons { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* 2 Sütun */
+            gap: 8px; 
+            margin-top: 10px; 
+        }
+
         .link-button {
-            background: var(--bg-color); color: var(--text-color); padding: 12px;
-            border-radius: 12px; text-decoration: none; font-weight: bold;
-            border: 1px solid var(--border-color); transition: 0.2s;
+            background: var(--bg-color); 
+            color: var(--text-color); 
+            padding: 10px;
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: bold;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color); 
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            height: 40px;
         }
         .link-button:hover { background: var(--border-color); }
+
+        /* Oyun Sonu Modal */
+        #gameModal .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            position: relative;
+        }
+        #playAgainButton {
+            background-color: var(--accent-green); color: #121212; border: none;
+            padding: 12px 30px; border-radius: 20px; font-weight: 900;
+            font-size: 1rem; cursor: pointer; margin-top: 15px; font-family: 'Satoshi', sans-serif; width: 100%;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
         
         @media (min-width: 600px) {
             .game-board { grid-template-columns: repeat(10, 1fr); }
-            .game-button { flex: 1; }
         }
     </style>
 </head>
 
 <body data-theme="default">
     
-    <div class="main-content-wrapper">
-        <div class="top-settings-bar">
-            <div class="setting-group">
-                <label for="difficultySelect">Zorluk:</label>
-                <select id="difficultySelect">
-                    <option value="easy">Kolay</option>
-                    <option value="normal" selected>Normal</option>
-                    <option value="hard">Zor</option>
-                </select>
-            </div>
-
-            <div class="setting-group">
-                <label for="themeSelect">Tema:</label>
-                <select id="themeSelect">
-                    <option value="default">Varsayılan</option>
-                    <option value="red">Kırmızı</option>
-                    <option value="green">Yeşil</option>
-                    <option value="yellow">Sarı</option>
-                    <option value="light">Aydınlık</option>
-                </select>
-            </div>
-
-            <div class="setting-group">
-                <label for="numberRangeSelect">Aralık:</label>
-                <select id="numberRangeSelect">
-                    <option value="1-11">1-11</option>
-                    <option value="1-30">1-30</option>
-                    <option value="1-50" selected>1-50</option>
-                    <option value="1-100">1-100</option>
-                </select>
-            </div>
+    <div class="top-settings-bar">
+        <div class="setting-group">
+            <label>Zorluk</label>
+            <select id="difficultySelect">
+                <option value="easy">Kolay</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Zor</option>
+            </select>
         </div>
+        <div class="setting-group">
+            <label>Tema</label>
+            <select id="themeSelect">
+                <option value="default">Varsayılan</option>
+                <option value="red">Kırmızı</option>
+                <option value="green">Yeşil</option>
+                <option value="yellow">Sarı</option>
+                <option value="light">Aydınlık</option>
+            </select>
+        </div>
+        <div class="setting-group">
+            <label>Aralık</label>
+            <select id="numberRangeSelect">
+                <option value="1-11">1-11</option>
+                <option value="1-30">1-30</option>
+                <option value="1-50" selected>1-50</option>
+                <option value="1-100">1-100</option>
+            </select>
+        </div>
+    </div>
 
+    <div class="main-content">
         <div class="container">
-            <h1>Sıralama Oyunu <span id="displayNumberRange">(1-50)</span></h1>
+            <h1>Sıralama Oyunu <span id="displayNumberRange"></span></h1>
             
             <div class="game-area">
                 <div class="current-number-display" id="currentNumberDisplay">?</div>
                 
-                <div class="game-info" id="gameInfo">Başlamak için "Yeni Sayı Çek" butonuna bas.</div>
-                <div class="undo-attempts-display" id="undoAttemptsDisplay"></div>
+                <div class="game-info-container">
+                    <div class="game-info" id="gameInfo">Başlamak için butona bas.</div>
+                    <div class="undo-attempts-display" id="undoAttemptsDisplay"></div>
+                </div>
                 
                 <div class="game-board" id="gameBoard"></div>
 
                 <div class="game-buttons">
-                    <button id="nextNumberButton" class="game-button">Yeni Sayı Çek</button>
-                    <button id="drawAnotherNumberButton" class="game-button">Başka Sayı Çek</button>
-                    <button id="undoPlacementButton" class="game-button">Geri Al</button>
-                    <button id="resetGameButton" class="game-button">Sıfırla</button>
+                    <button id="nextNumberButton" class="game-button">YENİ SAYI ÇEK</button>
+                    <button id="drawAnotherNumberButton" class="game-button">PAS GEÇ</button>
+                    <button id="undoPlacementButton" class="game-button">GERİ AL</button>
+                    <button id="resetGameButton" class="game-button">SIFIRLA</button>
                 </div>
             </div>
         </div>
     </div>
 
     <footer class="site-footer">
-        © 2025 <span id="openLinktreeButton">freddie</span>
+        © 2026 <span id="openLinktreeButton">freddie</span>
     </footer>
 
     <div id="gameModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="closeGameModalButton">&times;</span>
+            <span class="close-button" id="closeGameModalButton">×</span>
             <h2 id="modalTitle" style="margin-top:0; color:var(--accent-green)"></h2>
-            <p id="modalMessage" style="color:#aaa"></p>
+            <p id="modalMessage" style="color:#aaa; margin: 15px 0;"></p>
             <button id="playAgainButton">Tekrar Oyna</button>
         </div>
     </div>
 
     <div id="linktreeModal" class="modal">
         <div class="linktree-container">
-            <span class="close-button" id="closeLinktreeModal">&times;</span>
+            <span class="close-button" id="closeLinktreeModal" style="top:10px; right:10px;">×</span>
+            
             <div class="profile-section">
                 <img src="https://i.hizliresim.com/srzbf20.jpg" class="profile-pic">
-                <h2 style="margin:5px 0; color:var(--accent-purple)">@freddie</h2>
-                <p style="color:#888; font-size:0.9rem">freddiechill@outlook.com</p>
+                <h2 style="margin:5px 0; color:var(--accent-purple); font-size: 1.2rem;">@freddie</h2>
+                <p style="color:#888; font-size:0.8rem; margin:0;">freddiechill@outlook.com</p>
             </div>
+
             <div class="link-buttons">
                 <a href="https://kick.com/freddiechill" target="_blank" class="link-button">Kick</a>
                 <a href="https://www.youtube.com/@freddiechill" target="_blank" class="link-button">YouTube</a>
                 <a href="https://www.instagram.com/freddiechill/" target="_blank" class="link-button">Instagram</a>
                 <a href="https://x.com/freddiechill_" target="_blank" class="link-button">X / Twitter</a>
-                <a href="https://bsky.app/profile/freddiechill.bsky.social" target="_blank" class="link-button">Bluesky</a>
                 <a href="https://discord.com/invite/xkVdrvhGYe" target="_blank" class="link-button">Discord</a>
                 <a href="https://www.tiktok.com/@freddiechill" target="_blank" class="link-button">TikTok</a>
                 <a href="https://open.spotify.com/user/gxg38hjsavm5uo1y1gicf1oj1" target="_blank" class="link-button">Spotify</a>
@@ -480,7 +488,7 @@
             let NUMBER_RANGE_MAX = 50; 
 
             const MAX_MOVES = 10;
-            const ANIMATION_DURATION = 800;
+            const ANIMATION_DURATION = 600;
 
             const DIFFICULTY_ATTEMPTS_GENERAL = { 'easy': 3, 'normal': 1, 'hard': 0 };
             const DIFFICULTY_ATTEMPTS_1_11 = { 'easy': 1, 'normal': 0 };
@@ -535,7 +543,7 @@
 
                 lastPlacedNumber = null;
                 lastPlacedIndex = null;
-                gameInfo.textContent = 'Sayı çekmek için butona tıkla.';
+                gameInfo.textContent = 'Butona bas.';
                 updateGameBoard();
                 currentNumberDisplay.textContent = '?';
                 currentNumberDisplay.classList.remove('final', 'animating');
@@ -608,7 +616,7 @@
 
             function handleBoxClick(event) {
                 if (currentRandomNumber === null) {
-                    gameInfo.textContent = 'Önce sayı çekmelisin.';
+                    gameInfo.textContent = 'Sayı çekmelisin.';
                     return;
                 }
                 if (isAnimating) return;
@@ -625,7 +633,7 @@
                 }
 
                 if (!isValidPlacement(currentRandomNumber, clickedIndex)) {
-                    gameInfo.textContent = 'Sıralama bozuluyor!';
+                    gameInfo.textContent = 'Hatalı yer!';
                     clickedBoxElement.classList.add('invalid');
                     setTimeout(() => clickedBoxElement.classList.remove('invalid'), 500);
                     return;
@@ -648,7 +656,7 @@
                 updateUndoButtonState(); 
 
                 if (movesMade === MAX_MOVES) {
-                    endGame(true, 'Tebrikler! Başardın.');
+                    endGame(true, 'Tebrikler! Kazandın.');
                 }
             }
 
@@ -722,7 +730,7 @@
                     if (drawAnotherAttempts <= 0 || (numberRangeSelect.value === '1-11' && difficulty === 'normal')) {
                         endGame(false, `Sayı (${currentRandomNumber}) yerleşmiyor. Kaybettin!`);
                     } else {
-                        gameInfo.textContent = `${currentRandomNumber} yerleşmiyor. Pas hakkını kullan.`;
+                        gameInfo.textContent = `${currentRandomNumber} yerleşmiyor. Pas geçebilirsin.`;
                         drawAnotherNumberButton.disabled = false; 
                     }
                     nextNumberButton.disabled = true;
