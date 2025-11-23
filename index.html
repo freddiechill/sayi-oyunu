@@ -13,18 +13,19 @@
 
     <style>
         :root {
-            /* RENK PALETİ (Arifiye/KYK Uyumlu) */
+            /* SABİT TEMA RENKLERİ (Dark Modern) */
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --border-color: #333;
             --text-color: #e0e0e0;
             
+            /* Pastel Vurgular */
             --accent-blue: #90caf9;
             --accent-purple: #ce93d8;
             --accent-green: #a5d6a7;
             --accent-red: #ef9a9a;
-            --accent-yellow: #fff59d;
             
+            /* Oyun Kutuları */
             --box-bg: #252525;
             --box-filled-bg: var(--accent-purple);
             --box-filled-text: #121212;
@@ -32,22 +33,13 @@
             --btn-text: #fff;
         }
 
-        /* Tema Renkleri */
-        body[data-theme="red"] { --box-filled-bg: #ef9a9a; }
-        body[data-theme="green"] { --box-filled-bg: #a5d6a7; }
-        body[data-theme="yellow"] { --box-filled-bg: #fff59d; }
-        body[data-theme="light"] { 
-            --bg-color: #f0f0f0; --card-bg: #fff; --border-color: #ccc; --text-color: #111; 
-            --box-bg: #e0e0e0; --box-filled-text: #000; --btn-bg: #ddd; --btn-text: #000;
-        }
-
-        /* TEMEL YAPI (KAYDIRMA YOK) */
+        /* TEMEL YAPI (NO SCROLL) */
         html, body {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Kaydırmayı engelle */
+            overflow: hidden;
             font-family: 'Satoshi', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -56,20 +48,21 @@
             align-items: center;
         }
 
-        /* ÜST AYARLAR (Kompakt) */
+        /* ÜST AYARLAR */
         .top-settings-bar {
+            flex: 0 0 auto;
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             background: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
-            flex-shrink: 0; /* Büzülmesin */
             z-index: 10;
+            box-sizing: border-box;
         }
 
-        .setting-group { display: flex; align-items: center; gap: 5px; }
+        .setting-group { display: flex; align-items: center; gap: 8px; }
         label { font-size: 0.75rem; color: #888; font-weight: 700; }
         
         select {
@@ -77,26 +70,26 @@
             color: var(--text-color);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 4px 8px;
+            padding: 6px 12px;
             font-family: 'Satoshi', sans-serif;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             cursor: pointer;
             outline: none;
         }
 
-        /* ANA KONTEYNER (Esnek) */
+        /* ANA İÇERİK */
         .main-content {
-            flex: 1; /* Kalan tüm boşluğu kapla */
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Dikey ortala */
+            justify-content: center;
             align-items: center;
             width: 100%;
             max-width: 600px;
-            padding: 10px;
+            margin: 0 auto;
+            padding: 10px 20px;
             box-sizing: border-box;
-            overflow: hidden; /* İçerik taşmasın */
         }
 
         .container {
@@ -104,14 +97,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* İçerik çoksa sıkışması için */
+            gap: 2vh; 
             max-height: 100%; 
         }
 
         h1 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             text-align: center;
-            margin: 0 0 5px 0;
+            margin: 0;
             color: var(--text-color);
             flex-shrink: 0;
         }
@@ -119,7 +112,6 @@
             font-size: 0.8rem;
             color: #888;
             margin-left: 5px;
-            display: inline-block;
         }
 
         /* OYUN ALANI */
@@ -128,8 +120,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
-            flex: 1; /* Mümkün olduğunca alan kapla */
+            gap: 1.5vh;
+            flex: 1;
             justify-content: center;
         }
 
@@ -137,10 +129,12 @@
         .current-number-display {
             background-color: var(--card-bg);
             width: 100%;
-            padding: 15px 0;
+            height: 15vh; 
+            min-height: 80px;
+            max-height: 150px;
             border-radius: 20px;
             border: 1px solid var(--border-color);
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 900;
             color: var(--accent-blue);
             display: flex;
@@ -148,9 +142,6 @@
             align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             font-variant-numeric: tabular-nums;
-            min-height: 80px; /* Yüksekliği biraz kıstık */
-            height: 15vh;
-            max-height: 150px;
             flex-shrink: 0;
             transition: transform 0.2s;
         }
@@ -158,25 +149,29 @@
         .current-number-display.animating { transform: scale(0.95); opacity: 0.7; }
         .current-number-display.final { transform: scale(1.05); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* BİLGİ YAZILARI */
+        /* BİLGİ */
         .game-info-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
             min-height: 40px;
+            flex-shrink: 0;
         }
         .game-info { font-size: 0.9rem; color: #888; text-align: center; }
         .undo-attempts-display { font-size: 0.8rem; color: var(--accent-red); font-weight: bold; }
 
-        /* IZGARA (Mobil Uyumlu) */
+        /* OYUN TAHTASI */
         .game-board {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5x2 Düzen */
-            gap: 8px;
             width: 100%;
-            /* Ekran boyutuna göre kutuların boyutunu ayarla */
-            max-height: 40vh; 
+            gap: 8px;
+            grid-template-columns: repeat(5, 1fr);
+            max-height: 35vh;
+            flex-shrink: 1;
+        }
+        @media (min-width: 600px) {
+            .game-board { grid-template-columns: repeat(10, 1fr); }
         }
 
         .box-container {
@@ -191,11 +186,11 @@
             aspect-ratio: 1;
             background-color: var(--box-bg);
             border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 900;
             color: var(--text-color);
             cursor: pointer;
@@ -206,6 +201,8 @@
             background-color: var(--box-filled-bg);
             color: var(--box-filled-text);
             border-color: transparent;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
 
         .number-box.invalid {
@@ -214,12 +211,12 @@
             animation: shake 0.4s;
         }
 
-        .box-index { font-size: 0.65rem; color: #666; font-weight: bold; }
+        .box-index { font-size: 0.6rem; color: #666; font-weight: bold; }
 
         /* BUTONLAR */
         .game-buttons {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2x2 Düzen */
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
             width: 100%;
             margin-top: 5px;
@@ -237,6 +234,8 @@
             font-family: 'Satoshi', sans-serif;
             cursor: pointer;
             transition: transform 0.1s;
+            height: 45px;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .game-button:active { transform: scale(0.95); }
@@ -245,8 +244,9 @@
         #nextNumberButton { background-color: var(--accent-blue); color: #121212; border: none; grid-column: span 2; }
         #resetGameButton { background-color: var(--accent-red); color: #121212; border: none; grid-column: span 2; }
 
-        /* FOOTER (Sabit En Alt) */
+        /* FOOTER */
         .site-footer {
+            flex: 0 0 auto;
             width: 100%;
             padding: 10px;
             background-color: var(--card-bg);
@@ -254,7 +254,6 @@
             text-align: center;
             font-size: 0.8rem;
             color: #666;
-            flex-shrink: 0;
         }
 
         #openLinktreeButton {
@@ -264,7 +263,7 @@
             text-decoration: none;
         }
 
-        /* MODAL (Linktree) - EKRANA SIĞDIRMA */
+        /* MODALLAR */
         .modal {
             display: none;
             position: fixed;
@@ -286,26 +285,21 @@
             width: 100%;
             text-align: center;
             border: 1px solid var(--border-color);
-            /* Kaydırma olmasın diye max yükseklik ve flex */
             max-height: 90vh; 
             display: flex;
             flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
         }
 
-        .close-button {
-            position: absolute; top: 10px; right: 15px;
-            font-size: 24px; font-weight: bold; cursor: pointer; color: #888;
-        }
-
-        .profile-section { margin-bottom: 10px; flex-shrink: 0; }
+        .profile-section { display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .profile-pic { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent-purple); object-fit: cover;}
         
-        /* Linkleri Izgara Yap (Scroll Olmasın Diye) */
         .link-buttons { 
             display: grid; 
-            grid-template-columns: 1fr 1fr; /* 2 Sütun */
+            grid-template-columns: 1fr 1fr; 
             gap: 8px; 
-            margin-top: 10px; 
+            width: 100%;
         }
 
         .link-button {
@@ -315,7 +309,7 @@
             border-radius: 10px; 
             text-decoration: none; 
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border: 1px solid var(--border-color); 
             transition: 0.2s;
             display: flex;
@@ -325,22 +319,26 @@
             height: 40px;
         }
         .link-button:hover { background: var(--border-color); }
+        
+        .close-button {
+            position: absolute; top: 10px; right: 15px;
+            font-size: 24px; font-weight: bold; cursor: pointer; color: #888;
+        }
 
-        /* Oyun Sonu Modal */
         #gameModal .modal-content {
             background-color: var(--card-bg);
             padding: 30px;
-            border: 1px solid var(--border-color);
             border-radius: 24px;
             width: 90%;
             max-width: 350px;
             text-align: center;
+            border: 1px solid var(--border-color);
             position: relative;
         }
         #playAgainButton {
             background-color: var(--accent-green); color: #121212; border: none;
-            padding: 12px 30px; border-radius: 20px; font-weight: 900;
-            font-size: 1rem; cursor: pointer; margin-top: 15px; font-family: 'Satoshi', sans-serif; width: 100%;
+            padding: 12px; border-radius: 12px; font-weight: 900; width: 100%;
+            font-size: 1rem; cursor: pointer; margin-top: 15px; font-family: 'Satoshi', sans-serif;
         }
 
         @keyframes shake {
@@ -348,14 +346,10 @@
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
-        
-        @media (min-width: 600px) {
-            .game-board { grid-template-columns: repeat(10, 1fr); }
-        }
     </style>
 </head>
 
-<body data-theme="default">
+<body>
     
     <div class="top-settings-bar">
         <div class="setting-group">
@@ -364,16 +358,6 @@
                 <option value="easy">Kolay</option>
                 <option value="normal" selected>Normal</option>
                 <option value="hard">Zor</option>
-            </select>
-        </div>
-        <div class="setting-group">
-            <label>Tema</label>
-            <select id="themeSelect">
-                <option value="default">Varsayılan</option>
-                <option value="red">Kırmızı</option>
-                <option value="green">Yeşil</option>
-                <option value="yellow">Sarı</option>
-                <option value="light">Aydınlık</option>
             </select>
         </div>
         <div class="setting-group">
@@ -426,7 +410,7 @@
 
     <div id="linktreeModal" class="modal">
         <div class="linktree-container">
-            <span class="close-button" id="closeLinktreeModal" style="top:10px; right:10px;">×</span>
+            <span class="close-button" id="closeLinktreeModal">×</span>
             
             <div class="profile-section">
                 <img src="https://i.hizliresim.com/srzbf20.jpg" class="profile-pic">
@@ -462,7 +446,6 @@
             const difficultySelect = document.getElementById('difficultySelect');
             const numberRangeSelect = document.getElementById('numberRangeSelect');
             const displayNumberRange = document.getElementById('displayNumberRange');
-            const themeSelect = document.getElementById('themeSelect');
 
             const gameModal = document.getElementById('gameModal');
             const modalTitle = document.getElementById('modalTitle');
@@ -516,10 +499,6 @@
                 }
             }
 
-            function applyTheme(themeName) {
-                document.body.setAttribute('data-theme', themeName);
-            }
-
             function initGame() {
                 initDifficultyOptions();
                 difficulty = difficultySelect.value;
@@ -543,7 +522,7 @@
 
                 lastPlacedNumber = null;
                 lastPlacedIndex = null;
-                gameInfo.textContent = 'Butona bas.';
+                gameInfo.textContent = 'Sayı çekmek için butona tıkla.';
                 updateGameBoard();
                 currentNumberDisplay.textContent = '?';
                 currentNumberDisplay.classList.remove('final', 'animating');
@@ -787,7 +766,6 @@
             closeLinktreeModalButton.addEventListener('click', () => linktreeModal.style.display = 'none');
             difficultySelect.addEventListener('change', initGame);
             numberRangeSelect.addEventListener('change', initGame);
-            themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
 
             initGame();
         });
